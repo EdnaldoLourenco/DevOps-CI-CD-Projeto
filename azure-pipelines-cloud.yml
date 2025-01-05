@@ -5,7 +5,7 @@ variables:
   system.debug: true
   imageRepository: 'devops-ci-cd'
   tag: '$(Build.BuildId)'
-  
+
 pool:
   vmImage: ubuntu-latest
 
@@ -35,19 +35,12 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
 
-    - task: NodeTool@0
+    
+    - task: Docker@2
       inputs:
-        versionSource: 'spec'
-        versionSpec: '14.x'
-    - task: CmdLine@2
-      inputs:
-        script: 'npm install'
-    - task: trivy@1
-      inputs:
-        version: 'latest'
-        debug: true
-        path: '.'
-        exitCode: '0'
+        containerRegistry: 'svc-acr'
+        command: 'login'
+
     - task: Docker@2
       displayName: Build the Image
       inputs:
@@ -64,3 +57,10 @@ stages:
         command: 'push'
         tags: '$(tag)'
   
+    - task: trivy@1
+      inputs:
+        version: 'latest'
+        debug: true
+        loginDockerConfig: true
+        image: 'docker pull acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
+        exitCode: '0'
