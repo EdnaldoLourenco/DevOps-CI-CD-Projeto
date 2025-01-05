@@ -4,7 +4,6 @@ trigger:
 variables:
   system.debug: true
   Build.SourceBranchName: 'master'
-  
 pool:
   name: Projeto
 
@@ -17,13 +16,17 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
+    # - task: CmdLine@2
+    #   displayName: Clone Repository
+    #   inputs:
+    #     script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
         
     - task: SonarQubePrepare@7
       inputs:
         SonarQube: 'svc-sonar'
         scannerMode: 'cli'
         configMode: 'manual'
-        cliProjectKey: 'myproject-${Build.SourceBranchName}'
+        cliProjectKey: 'myproject-$(Build.SourceBranchName)'
         cliProjectName: 'CI/CD'
         cliSources: '.'
         extraProperties: |
