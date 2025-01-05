@@ -11,10 +11,12 @@ stages:
   - job: CI
     displayName: CI
     steps:
-    - task: CmdLine@2
-      displayName: Clone Repository
-      inputs:
-        script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
+    - checkout: self
+      fetchDepth: 0
+    # - task: CmdLine@2
+    #   displayName: Clone Repository
+    #   inputs:
+    #     script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
         
     - task: SonarQubePrepare@7
       inputs:
@@ -24,12 +26,17 @@ stages:
         cliProjectKey: 'myproject'
         cliProjectName: 'CI/CD'
         cliSources: '.'
-        extraProperties: 
+        extraProperties: |
+          # Additional properties that will be passed to the scanner, 
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.branch.name=""
+          sonar.java.binaries=.
 
     - task: SonarQubeAnalyze@7
       displayName: SonarAnalyze
       inputs:
-        jdkversion: 'JAVA_HOME'
+        jdkversion: 'JAVA_HOME_17_X64'
     
     - task: SonarQubePublish@7
       displayName: SonarGate
