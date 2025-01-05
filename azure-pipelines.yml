@@ -3,7 +3,7 @@ trigger:
 
 variables:
   system.debug: true
-  Build.SourceBranchName: 'master'
+
 pool:
   name: Projeto
 
