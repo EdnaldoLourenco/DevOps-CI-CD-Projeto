@@ -9,11 +9,39 @@ trigger:
 pool:
   name: Projeto
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: Dev
+  displayName: Dev
+  jobs:
+  - job: CI
+    displayName: CI
+    steps:
+    - task: CmdLine@2
+      displayName: Clone Repository
+      inputs:
+        script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
+        
+    - task: SonarQubePrepare@7
+      displayName: SonarPrepare   
+      inputs:
+        SonarQube: 'svc-sonar'
+        scannerMode: 'cli'
+        configMode: 'manual'
+        cliProjectKey: 'myproject'
+        cliProjectName: 'CI/CD'
+        cliSources: '.'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner, 
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.java.binaries=.
+    
+    - task: SonarQubeAnalyze@7
+      displayName: SonarAnalyze
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+    
+    - task: SonarQubePublish@7
+      displayName: SonarGate
+      inputs:
+        pollingTimeoutSec: '300'
