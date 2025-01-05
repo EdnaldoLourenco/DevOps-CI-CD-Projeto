@@ -31,7 +31,7 @@ stages:
     - task: SonarQubeAnalyze@7
       displayName: SonarAnalyze
       inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
+        jdkversion: 'JAVA_HOME'
     
     - task: SonarQubePublish@7
       displayName: SonarGate
