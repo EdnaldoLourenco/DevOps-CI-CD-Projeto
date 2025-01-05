@@ -62,5 +62,5 @@ stages:
         version: 'latest'
         debug: true
         loginDockerConfig: true
-        image: 'docker pull acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
+        image: 'acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
         exitCode: '0'
