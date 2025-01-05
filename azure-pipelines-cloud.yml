@@ -1,0 +1,35 @@
+trigger:
+- main
+
+variables:
+  system.debug: true
+
+pool:
+  name: Projeto
+
+stages:
+- stage: Dev
+  displayName: Dev
+  jobs:
+  - job: CI
+    displayName: CI
+    steps:
+    - checkout: self
+      fetchDepth: 0
+    
+    - task: SonarCloudPrepare@3
+      inputs:
+        SonarQube: 'svc-sonarcloud'
+        organization: 'juniorramos0015'
+        scannerMode: 'cli'
+        configMode: 'manual'
+        cliProjectKey: 'juniorramos0015_DevOps-CI-CD-Amazon-Prime-Clone-Project'
+        cliProjectName: 'DevOps CI-CD Amazon Prime Clone Project'
+        cliSources: '.'
+    - task: SonarCloudAnalyze@3
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+    - task: SonarCloudPublish@3
+      inputs:
+        pollingTimeoutSec: '300'
+
