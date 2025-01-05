@@ -19,6 +19,15 @@ stages:
     - checkout: self
       fetchDepth: 0
     
+    - task: CmdLine@2
+      displayName: Install Trivy
+      inputs:
+        script: |
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
     - task: SonarCloudPrepare@3
       inputs:
         SonarQube: 'svc-sonarcloud'
@@ -37,6 +46,7 @@ stages:
 
     
     - task: Docker@2
+      displayName: Docker Login
       inputs:
         containerRegistry: 'svc-acr'
         command: 'login'
@@ -49,8 +59,22 @@ stages:
         command: 'build'
         Dockerfile: './Dockerfile'
         tags: '$(tag)'
+    
+    - task: CmdLine@2
+      displayName: Run Trivy
+      inputs:
+        script: 'trivy image --severity HIGH,CRITICAL --format template --template "@template/junit.tpl" -o junit-report-high-crit.xml acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
 
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/junit-report-high-crit.xml'
+        mergeTestResults: true
+        failTaskOnFailedTests: false
+        testRunTitle: 'Trivy - Low and Medium Vulnerabilities'
+      condition: 'always()'
     - task: Docker@2
+      displayName: Docker Push
       inputs:
         containerRegistry: 'svc-acr'
         repository: '$(imageRepository)'
