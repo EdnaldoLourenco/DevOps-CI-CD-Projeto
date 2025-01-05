@@ -1,6 +1,9 @@
 trigger:
 - main
 
+variables:
+  system.debug: true
+  
 pool:
   name: Projeto
 
