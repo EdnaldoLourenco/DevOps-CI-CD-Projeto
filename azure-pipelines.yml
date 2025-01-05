@@ -24,9 +24,7 @@ stages:
         cliProjectKey: 'myproject'
         cliProjectName: 'CI/CD'
         cliSources: '.'
-        extraProperties: |
-          sonar.branch.name=""
-          sonar.java.binaries=.
+        extraProperties: 
 
     - task: SonarQubeAnalyze@7
       displayName: SonarAnalyze
