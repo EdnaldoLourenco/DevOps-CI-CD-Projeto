@@ -16,19 +16,14 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
-    # - task: CmdLine@2
-    #   displayName: Clone Repository
-    #   inputs:
-    #     script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
-        
     - task: SonarQubePrepare@7
       inputs:
         SonarQube: 'svc-sonar'
         scannerMode: 'cli'
         configMode: 'manual'
-        cliProjectKey: 'myproject-$(Build.SourceBranchName)'
+        cliProjectKey: 'myproject'
         cliProjectName: 'CI/CD'
-        cliSources: '.'
+        cliSources: '/home/azureuser/myagent/_work/1/s'
         extraProperties: |
           # Additional properties that will be passed to the scanner, 
           # Put one key=value per line, example:
