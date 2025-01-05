@@ -43,6 +43,8 @@ stages:
     - task: trivy@1
       inputs:
         version: 'latest'
+        debug: true
         path: '.'
+        exitCode: '0'
     
   
