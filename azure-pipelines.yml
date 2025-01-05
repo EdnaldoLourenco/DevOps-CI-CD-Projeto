@@ -26,14 +26,16 @@ stages:
         SonarQube: 'svc-sonar'
         scannerMode: 'cli'
         configMode: 'manual'
-        cliProjectKey: 'myproject'
+        cliProjectKey: 'myproject-${Build.SourceBranchName}'
         cliProjectName: 'CI/CD'
         cliSources: '.'
         extraProperties: |
           # Additional properties that will be passed to the scanner, 
           # Put one key=value per line, example:
           # sonar.exclusions=**/*.bin
-          sonar.branch.name="master"
+          sonar.log.level=DEBUG 
+          sonar.verbose=true
+          sonar.branch.name=""
           sonar.java.binaries=.
     - task: SonarQubeAnalyze@7
       displayName: SonarAnalyze
