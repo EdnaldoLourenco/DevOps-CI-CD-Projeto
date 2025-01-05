@@ -17,7 +17,6 @@ stages:
         script: 'git clone https://github.com/EdnaldoLourenco/DevOps-CI-CD-Projeto.git'
         
     - task: SonarQubePrepare@7
-      displayName: SonarPrepare   
       inputs:
         SonarQube: 'svc-sonar'
         scannerMode: 'cli'
@@ -25,12 +24,8 @@ stages:
         cliProjectKey: 'myproject'
         cliProjectName: 'CI/CD'
         cliSources: '.'
-        extraProperties: |
-          # Additional properties that will be passed to the scanner, 
-          # Put one key=value per line, example:
-          # sonar.exclusions=**/*.bin
-          sonar.java.binaries=.
-    
+        extraProperties: 'sonar.java.binaries=.'
+
     - task: SonarQubeAnalyze@7
       displayName: SonarAnalyze
       inputs:
