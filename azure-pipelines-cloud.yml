@@ -33,3 +33,16 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
 
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '14.x'
+    - task: CmdLine@2
+      inputs:
+        script: 'npm install'
+    - task: trivy@1
+      inputs:
+        version: 'latest'
+        path: '.'
+    
+  
