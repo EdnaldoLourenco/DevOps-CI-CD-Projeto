@@ -27,8 +27,10 @@ stages:
         extraProperties: |
           # Additional properties that will be passed to the scanner, 
           # Put one key=value per line, example:
-          # sonar.exclusions=**/*.bin sonar.java.binaries=.
-          sonar.branch.name="" sonar.scanner.metadataFilePath=""
+          # sonar.exclusions=**/*.bin 
+          sonar.java.binaries=.
+          sonar.branch.name="" 
+          sonar.scanner.metadataFilePath=""
           sonar.verbose=true
           sonar.log.level=DEBUG
     - task: SonarQubeAnalyze@7
