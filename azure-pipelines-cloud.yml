@@ -63,7 +63,7 @@ stages:
     - task: CmdLine@2
       displayName: Run Trivy
       inputs:
-        script: 'trivy image --severity HIGH,CRITICAL --format template --template "@template/junit.tpl" -o junit-report-high-crit.xml acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
+        script: 'trivy image --severity HIGH,CRITICAL --format template --template "junit.tpl" -o junit-report-high-crit.xml acrprojeto.azurecr.io/devops-ci-cd:$(tag)'
 
     - task: PublishTestResults@2
       inputs:
